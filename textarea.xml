@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<extension method="upgrade" version="3.5" type="plugin" group="vmcustom">
+    <name>PLG_VMCUSTOM_TEXTAREA</name>
+    <description>PLG_VMCUSTOM_TEXTAREA_XML_DESC</description>
+    <author>CMExtension</author>
+    <authorUrl>https://cmext.vn</authorUrl>
+    <copyright>Copyright (C) 2018 CMExtension</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <creationDate>Mar 11, 2018</creationDate>
+    <version>1.0.0</version>
+
+    <files>
+        <filename plugin="textarea">textarea.php</filename>
+        <folder>language</folder>
+        <folder>textarea</folder>
+    </files>
+
+    <vmconfig>
+        <fields name="params">
+            <fieldset name="template">
+                <field
+                    name="rows"
+                    type="number"
+                    default="3"
+                    label="PLG_VMCUSTOM_TEXTAREA_ROWS"
+                    description="PLG_VMCUSTOM_TEXTAREA_ROWS_DESC" />
+
+                <field
+                    name="cols"
+                    type="number"
+                    default="10"
+                    label="PLG_VMCUSTOM_TEXTAREA_COLS"
+                    description="PLG_VMCUSTOM_TEXTAREA_COLS_DESC" />
+
+                <field
+                    name="maxlength"
+                    type="number"
+                    default="500"
+                    label="PLG_VMCUSTOM_TEXTAREA_MAXLENGTH"
+                    description="PLG_VMCUSTOM_TEXTAREA_MAXLENGTH_DESC" />
+
+                <field
+                    name="placeholder"
+                    type="text"
+                    label="PLG_VMCUSTOM_TEXTAREA_PLACEHOLDER"
+                    description="PLG_VMCUSTOM_TEXTAREA_PLACEHOLDER_DESC" />
+
+                <field
+                    name="css_classes"
+                    type="text"
+                    label="PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES"
+                    description="PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES" />
+
+                <field
+                    name="required"
+                    type="radio"
+                    default="0"
+                    label="PLG_VMCUSTOM_TEXTAREA_REQUIRED"
+                    description="PLG_VMCUSTOM_TEXTAREA_REQUIRED_DESC" >
+                        <option value="0">JNO</option>
+                        <option value="1">JYES</option>
+                </field>
+            </fieldset>
+        </fields>
+    </vmconfig>
+</extension>
