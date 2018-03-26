@@ -49,17 +49,19 @@
                     name="css_classes"
                     type="text"
                     label="PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES"
-                    description="PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES" />
+                    description="PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES_DESC" />
 
                 <field
-                    name="required"
-                    type="radio"
-                    default="0"
-                    label="PLG_VMCUSTOM_TEXTAREA_REQUIRED"
-                    description="PLG_VMCUSTOM_TEXTAREA_REQUIRED_DESC" >
-                        <option value="0">JNO</option>
-                        <option value="1">JYES</option>
-                </field>
+                    name="value_prefix"
+                    type="text"
+                    label="PLG_VMCUSTOM_TEXTAREA_VALUE_PREFIX"
+                    description="PLG_VMCUSTOM_TEXTAREA_VALUE_PREFIX_DESC" />
+
+                <field
+                    name="value_postfix"
+                    type="text"
+                    label="PLG_VMCUSTOM_TEXTAREA_VALUE_POSTFIX"
+                    description="PLG_VMCUSTOM_TEXTAREA_VALUE_POSTFIX_DESC" />
             </fieldset>
         </fields>
     </vmconfig>

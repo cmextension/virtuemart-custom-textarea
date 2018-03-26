@@ -39,11 +39,5 @@ if ($params->placeholder != '') {
 } else {
     $placeholder = '';
 }
-
-if ((int) $params->required == 1) {
-    $required = ' required';
-} else {
-    $required = '';
-}
 ?>
-<textarea class="<?php echo $class ?>" name="<?php echo $name?>"<?php echo $rows . $cols . $maxlength . $placeholder . $required ?>></textarea>
+<textarea class="<?php echo $class ?>" name="<?php echo $name?>"<?php echo $rows . $cols . $maxlength . $placeholder; ?>></textarea>

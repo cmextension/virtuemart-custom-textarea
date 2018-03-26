@@ -11,7 +11,8 @@ if (!class_exists('vmCustomPlugin')) {
     require VMPATH_PLUGINLIBS . DS . 'vmcustomplugin.php';
 }
 
-class PlgVmCustomTextarea extends vmCustomPlugin {
+class PlgVmCustomTextarea extends vmCustomPlugin
+{
     public function __construct(&$subject, $config)
     {
         parent::__construct($subject, $config);
@@ -22,7 +23,8 @@ class PlgVmCustomTextarea extends vmCustomPlugin {
             'maxlength' => array(0.0, 'int'),
             'placeholder' => array('', 'char'),
             'css_classes' => array('', 'char'),
-            'required' => array(0.0, 'bool')
+            'value_prefix' => array('', 'char'),
+            'value_postfix' => array('', 'char'),
         ];
 
         $this->setConfigParameterable('customfield_params', $varsToPush);
@@ -45,17 +47,19 @@ class PlgVmCustomTextarea extends vmCustomPlugin {
     <legend>' . vmText::_('PLG_VMCUSTOM_TEXTAREA') . '</legend>
     <table class="admintable">';
 
-       $html = VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_ROWS', 'customfield_params[' . $row . '][rows]', $field->rows);
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_ROWS', 'customfield_params[' . $row . '][rows]', $field->rows);
 
-       $html = VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_COLS', 'customfield_params[' . $row . '][cols]', $field->cols);
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_COLS', 'customfield_params[' . $row . '][cols]', $field->cols);
 
-       $html = VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_MAXLENGTH', 'customfield_params[' . $row . '][maxlength]', $field->maxlength);
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_MAXLENGTH', 'customfield_params[' . $row . '][maxlength]', $field->maxlength);
 
-       $html = VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_PLACEHOLDER', 'customfield_params[' . $row . '][placeholder]', $field->placeholder);
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_PLACEHOLDER', 'customfield_params[' . $row . '][placeholder]', $field->placeholder);
 
-       $html = VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES', 'customfield_params[' . $row . '][css_classes]', $field->css_classes);
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_CSS_CLASSES', 'customfield_params[' . $row . '][css_classes]', $field->css_classes);
 
-        $html .= VmHTML::row('select', 'PLG_VMCUSTOM_TEXTAREA_REQUIRED', 'customfield_params[' . $row . '][required]', $requiredOptions, $field->required, '', 'value', 'text', false);
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_VALUE_PREFIX', 'customfield_params[' . $row . '][value_prefix]', $field->value_prefix);
+
+        $html .= VmHTML::row('input', 'PLG_VMCUSTOM_TEXTAREA_VALUE_POSTFIX', 'customfield_params[' . $row . '][value_postfix]', $field->value_postfix);
 
         $html .='
     </table>
@@ -92,7 +96,26 @@ class PlgVmCustomTextarea extends vmCustomPlugin {
         foreach ($product->customProductData[$productCustom->virtuemart_custom_id] as $k => $item) {
             if ($productCustom->virtuemart_customfield_id == $k) {
                 if (isset($item['comment'])) {
-                    $html .= '<span>' . vmText::_($productCustom->custom_title) . ' ' . $item['comment'] . '</span>';
+                    if (isset($productCustom->value_prefix)
+                        && $productCustom->value_prefix != '') {
+                        $prefix = $productCustom->value_prefix;
+                        $prefix = str_replace('DOUBLEQUOTE', '"', $prefix);
+                        $prefix = str_replace('SINGLEQUOTE', "'", $prefix);
+                    } else {
+                        $prefix = '';
+                    }
+
+                    if (isset($productCustom->value_postfix)
+                        && $productCustom->value_postfix != '') {
+                        $postfix = $productCustom->value_postfix;
+                        $postfix = str_replace('DOUBLEQUOTE', '"', $postfix);
+                        $postfix = str_replace('SINGLEQUOTE', "'", $postfix);
+                    } else {
+                        $postfix = '';
+                    }
+
+                    $value = $prefix . nl2br($item['comment']) . $postfix;
+                    $html .= '<span>' . vmText::_($productCustom->custom_title) . ' ' . $value . '</span>';
                 }
             }
         }
@@ -184,25 +207,8 @@ class PlgVmCustomTextarea extends vmCustomPlugin {
 
     public function plgVmPrepareCartProduct(&$product, &$customField, $selected, &$modificatorSum)
     {
-        if ($customField->custom_element !== $this->_name) {
-            return false;
-        }
-
-        if (!empty($selected['comment'])) {
-            if ($customField->custom_price_by_letter == 1) {
-                $charcount = strlen(html_entity_decode($selected['comment']));
-            } else {
-                $charcount = 1.0;
-            }
-
-            $modificatorSum += $charcount * $customField->customfield_price ;
-        } else {
-            $modificatorSum += 0.0;
-        }
-
         return true;
     }
-
 
     public function plgVmDisplayInOrderCustom(&$html, $item, $param, $productCustom, $row, $view = 'FE')
     {
